@@ -7,7 +7,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
-import ButtonCollection from "./Commons/Button-group";
+import Button from "@mui/material/Button";
+import EditIcon from "@mui/icons-material/Edit";
+import CancelIcon from "@mui/icons-material/Cancel";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import FormDialog from "./Todo-form";
 
@@ -54,7 +56,16 @@ export default function AccessibleTable() {
                   aria-label="vertical contained button group"
                   variant="contained"
                 >
-                  <ButtonCollection />
+                  <Button variant="contained" startIcon={<EditIcon />}>
+                    UPDATE
+                  </Button>
+                  <Button
+                    variant="contained"
+                    startIcon={<CancelIcon />}
+                    color="error"
+                  >
+                    DELETE
+                  </Button>
                 </ButtonGroup>
               </TableCell>
             </TableRow>

@@ -14,7 +14,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import ButtonCollection from "./Commons/Button-group";
 // import BasicDatePicker from "./Commons/Date-picker";
 
 export default function FormDialog() {
@@ -77,7 +76,21 @@ export default function FormDialog() {
           </Box>
         </DialogContent>
         <DialogActions>
-          <ButtonCollection />
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            onClick={handleClose}
+          >
+            UPDATE
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<CancelIcon />}
+            color="error"
+            onClick={handleClose}
+          >
+            DELETE
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
