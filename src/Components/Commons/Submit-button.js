@@ -54,7 +54,7 @@ const SubmitButton = ({
           ) : (
             <TextField
               margin="dense"
-              label="Task"
+              label="Title"
               type="text"
               fullWidth
               value={currentTask.task || ""}
