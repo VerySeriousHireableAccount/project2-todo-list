@@ -33,10 +33,10 @@ const SubmitButton = ({
     <div>
       <Button
         variant="contained"
-        startIcon={isUpdate ? <EditIcon /> : <AddCircleIcon />}
+        startIcon={openEditDialog ? <EditIcon /> : <AddCircleIcon />}
         onClick={openEditDialog ? handleOpenEditDialog : handleOpenAddDialog}
       >
-        {isUpdate ? "UPDATE" : "ADD"}
+        {openEditDialog ? "UPDATE" : "ADD"}
       </Button>
       <Dialog
         open={openEditDialog ? openEditDialog : openAddDialog}
@@ -45,7 +45,7 @@ const SubmitButton = ({
         <Toolbar
           sx={{ display: "flex", backgroundColor: "#1666bf", color: "#ffffff" }}
         >
-          {isUpdate ? <EditIcon /> : <AddCircleIcon />}
+          {openEditDialog ? <EditIcon /> : <AddCircleIcon />}
           <DialogTitle>{openEditDialog ? "Edit" : "Add"} Task</DialogTitle>
         </Toolbar>
         <DialogContent>
