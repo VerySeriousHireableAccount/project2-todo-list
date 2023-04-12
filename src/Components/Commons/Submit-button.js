@@ -53,6 +53,7 @@ const SubmitButton = ({
             <></>
           ) : (
             <TextField
+              required
               margin="dense"
               label="Title"
               type="text"
@@ -75,6 +76,7 @@ const SubmitButton = ({
           )}
 
           <TextField
+            required
             margin="dense"
             label="Description"
             type="text"

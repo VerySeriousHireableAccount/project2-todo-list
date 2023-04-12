@@ -92,7 +92,12 @@ const TodoList = () => {
   };
 
   const handleSubmit = () => {
-    if (!currentTask.task || !currentTask.deadline || !currentTask.priority) {
+    if (
+      !currentTask.task ||
+      !currentTask.deadline ||
+      !currentTask.priority ||
+      !currentTask.description
+    ) {
       return;
     }
 
