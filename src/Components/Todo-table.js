@@ -17,7 +17,11 @@ const Todo = ({
     <TableRow key={task.id}>
       <TableCell align="center">{task.task}</TableCell>
       <TableCell align="center">{task.description}</TableCell>
-      <TableCell align="center">{task.deadline}</TableCell>
+      <TableCell align="center">
+        {task.deadline.slice(5, 7)}/{task.deadline.slice(8, 10)}/
+        {task.deadline.slice(0, 4)}
+      </TableCell>
+      {console.log(task.deadline)}
       <TableCell align="center">{task.priority}</TableCell>
       <TableCell align="center">
         <Checkbox

@@ -171,6 +171,7 @@ const TodoList = () => {
         </Table>
       </TableContainer>
       <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={showSuccessSnackbar}
         autoHideDuration={1000}
         onClose={() => setShowSuccessSnackbar(false)}
