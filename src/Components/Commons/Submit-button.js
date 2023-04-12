@@ -7,20 +7,26 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-
+import Toolbar from "@mui/material/Toolbar";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 const SubmitButton = ({
   currentTask,
+  handleOpenEditDialog,
   handleCloseEditDialog,
   handleOpenAddDialog,
   handleCloseAddDialog,
   openAddDialog,
+  openEditDialog,
   handleEditTask,
-  handleTaskChange,
+  handleSubmit,
+  setCurrentTask,
   handleDescriptionChange,
   handleDeadlineChange,
   handlePriorityChange,
-  handleSubmit,
-  openEditDialog,
   isUpdate,
 }) => {
   return (
@@ -28,7 +34,7 @@ const SubmitButton = ({
       <Button
         variant="contained"
         startIcon={isUpdate ? <EditIcon /> : <AddCircleIcon />}
-        onClick={handleOpenAddDialog}
+        onClick={openEditDialog ? handleOpenEditDialog : handleOpenAddDialog}
       >
         {isUpdate ? "UPDATE" : "ADD"}
       </Button>
@@ -36,19 +42,36 @@ const SubmitButton = ({
         open={openEditDialog ? openEditDialog : openAddDialog}
         onClose={openEditDialog ? handleCloseEditDialog : handleCloseAddDialog}
       >
-        <DialogTitle>{openEditDialog ? "Edit" : "Add"} Task</DialogTitle>
+        <Toolbar sx={{ display: "flex", backgroundColor: "#1666bf" }}>
+          {isUpdate ? <EditIcon /> : <AddCircleIcon />}
+          <DialogTitle>{openEditDialog ? "Edit" : "Add"} Task</DialogTitle>
+        </Toolbar>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Task"
-            type="text"
-            fullWidth
-            value={currentTask.task || ""}
-            onChange={handleTaskChange}
-            error={!currentTask.task}
-            helperText={!currentTask.task && "Please enter a task"}
-          />
+          {openEditDialog ? (
+            <></>
+          ) : (
+            <TextField
+              margin="dense"
+              label="Task"
+              type="text"
+              fullWidth
+              value={currentTask.task || ""}
+              onChange={(event) =>
+                setCurrentTask({
+                  ...currentTask,
+                  task: event.target.value,
+                  taskError: false,
+                  taskErrorMessage: "",
+                })
+              }
+              error={!currentTask.task || currentTask.taskError}
+              helperText={
+                (!currentTask.description && "Please enter a description") ||
+                currentTask.taskErrorMessage
+              }
+            />
+          )}
+
           <TextField
             margin="dense"
             label="Description"
@@ -71,16 +94,28 @@ const SubmitButton = ({
             error={!currentTask.deadline}
             helperText={!currentTask.deadline && "Please enter a deadline"}
           />
-          <TextField
-            margin="dense"
-            label="Priority"
-            type="text"
-            fullWidth
-            value={currentTask.priority || ""}
-            onChange={handlePriorityChange}
-            error={!currentTask.priority}
-            helperText={!currentTask.priority && "Please enter a priority"}
-          />
+          <FormControl>
+            <FormLabel id="demo-row-radio-buttons-group-label" color="error">
+              Priority
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              margin="dense"
+              label="Priority"
+              type="text"
+              fullWidth
+              value={currentTask.priority || ""}
+              onChange={handlePriorityChange}
+              error={!currentTask.priority}
+              helperText={!currentTask.priority && "Please enter a priority"}
+            >
+              <FormControlLabel value="low" control={<Radio />} label="low" />
+              <FormControlLabel value="med" control={<Radio />} label="med" />
+              <FormControlLabel value="high" control={<Radio />} label="high" />
+            </RadioGroup>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button

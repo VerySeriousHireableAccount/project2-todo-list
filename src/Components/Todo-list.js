@@ -12,6 +12,8 @@ import Typography from "@mui/material/Typography";
 import SubmitButton from "./Commons/Submit-button";
 import MenuIcon from "@mui/icons-material/Menu";
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 const TodoList = () => {
   const [tasks, setTasks] = useState([]);
@@ -19,6 +21,9 @@ const TodoList = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [currentTask, setCurrentTask] = useState({});
   const [isComplete, setIsComplete] = useState(false);
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const defaultTask = {
     id: "",
     task: "",
@@ -33,6 +38,10 @@ const TodoList = () => {
     setOpenAddDialog(false);
   };
 
+  const handleTaskChange = (event) => {
+    setCurrentTask({ ...currentTask, task: event.target.value });
+  };
+
   const handleEditTask = () => {
     const newTasks = [...tasks];
     const index = newTasks.findIndex((task) => task.id === currentTask.id);
@@ -42,11 +51,15 @@ const TodoList = () => {
     }
     setCurrentTask(defaultTask);
     setOpenEditDialog(false);
+    setShowSuccessSnackbar(true);
+    setSuccessMessage("Task updated successfully!");
   };
 
   const handleDeleteTask = (id) => {
     const updatedTasks = tasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
+    setShowSuccessSnackbar(true);
+    setSuccessMessage("Task deleted successfully!");
   };
 
   const handleOpenEditDialog = (task) => {
@@ -65,10 +78,6 @@ const TodoList = () => {
 
   const handleCloseAddDialog = () => {
     setOpenAddDialog(false);
-  };
-
-  const handleTaskChange = (event) => {
-    setCurrentTask({ ...currentTask, task: event.target.value });
   };
 
   const handleDescriptionChange = (event) => {
@@ -95,20 +104,36 @@ const TodoList = () => {
     }
     setCurrentTask(defaultTask);
   };
-
   const handleSubmit = () => {
-    if (
-      currentTask.task &&
-      currentTask.description &&
-      currentTask.deadline &&
-      currentTask.priority
-    ) {
-      if (currentTask.id) {
-        handleEditTask(currentTask);
-      } else {
-        handleAddTask({ ...currentTask, id: Date.now() });
-      }
+    if (!currentTask.task || !currentTask.deadline || !currentTask.priority) {
+      return;
     }
+
+    if (
+      tasks.some(
+        (task) =>
+          task.task.toLowerCase() === currentTask.task.toLowerCase() &&
+          task.id !== currentTask.id
+      )
+    ) {
+      setCurrentTask((prevTask) => ({
+        ...prevTask,
+        taskError: true,
+        taskErrorMessage: "Task already exists",
+      }));
+      return;
+    }
+
+    const newTasks = [...tasks];
+    if (!currentTask.id) {
+      currentTask.id = Date.now();
+      newTasks.push(currentTask);
+    }
+    setTasks(newTasks);
+    setCurrentTask(defaultTask);
+    setOpenAddDialog(false);
+    setShowSuccessSnackbar(true);
+    setSuccessMessage("Task added successfully!");
   };
 
   return (
@@ -120,18 +145,20 @@ const TodoList = () => {
           FRAMEWORKS
         </Typography>
         <SubmitButton
-          isUpdate={false}
           currentTask={currentTask}
+          handleOpenEditDialog={handleOpenEditDialog}
           handleCloseEditDialog={handleCloseEditDialog}
           handleOpenAddDialog={handleOpenAddDialog}
+          handleCloseAddDialog={handleCloseAddDialog}
           openAddDialog={openAddDialog}
+          openEditDialog={openEditDialog}
           handleEditTask={handleEditTask}
-          handleTaskChange={handleTaskChange}
+          handleSubmit={handleSubmit}
+          setCurrentTask={setCurrentTask}
           handleDescriptionChange={handleDescriptionChange}
           handleDeadlineChange={handleDeadlineChange}
           handlePriorityChange={handlePriorityChange}
-          handleSubmit={handleSubmit}
-          openEditDialog={openEditDialog}
+          isUpdate={false}
         />
       </Toolbar>
       <TableContainer component={Paper}>
@@ -142,7 +169,7 @@ const TodoList = () => {
               <TableCell align="center">Description</TableCell>
               <TableCell align="center">Deadline</TableCell>
               <TableCell align="center">Priority</TableCell>
-              <TableCell align="center">IsComplete</TableCell>
+              <TableCell align="center">Is Complete</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
@@ -157,6 +184,15 @@ const TodoList = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Snackbar
+        open={showSuccessSnackbar}
+        autoHideDuration={1000}
+        onClose={() => setShowSuccessSnackbar(false)}
+      >
+        <Alert onClose={() => setShowSuccessSnackbar(false)} severity="success">
+          {successMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
