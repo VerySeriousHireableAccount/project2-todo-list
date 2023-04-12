@@ -11,8 +11,7 @@ const Todo = ({
   tasks,
   handleDeleteTask,
   handleOpenEditDialog,
-  handleCompleteChange,
-  isComplete,
+  handleTaskComplete,
 }) => {
   return tasks.map((task) => (
     <TableRow key={task.id}>
@@ -21,7 +20,10 @@ const Todo = ({
       <TableCell align="center">{task.deadline}</TableCell>
       <TableCell align="center">{task.priority}</TableCell>
       <TableCell align="center">
-        <Checkbox checked={task.isDone} onChange={handleCompleteChange} />
+        <Checkbox
+          checked={task.isComplete}
+          onChange={() => handleTaskComplete(task)}
+        />
       </TableCell>
       <TableCell align="center">
         <ButtonGroup
@@ -30,7 +32,7 @@ const Todo = ({
           variant="contained"
           className="icons"
         >
-          {task.isDone ? (
+          {task.isComplete ? (
             <></>
           ) : (
             <Button

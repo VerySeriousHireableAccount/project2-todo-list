@@ -20,7 +20,6 @@ const TodoList = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [currentTask, setCurrentTask] = useState({});
-  const [isComplete, setIsComplete] = useState(false);
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -30,16 +29,16 @@ const TodoList = () => {
     description: "",
     deadline: "",
     priority: "",
-    isDone: false,
+    isComplete: false,
   };
 
-  const handleAddTask = (newTask) => {
-    setTasks([...tasks, newTask]);
-    setOpenAddDialog(false);
-  };
-
-  const handleTaskChange = (event) => {
-    setCurrentTask({ ...currentTask, task: event.target.value });
+  const handleTaskComplete = (task) => {
+    const newTasks = [...tasks];
+    const index = newTasks.findIndex((t) => t.id === task.id);
+    if (index !== -1) {
+      newTasks[index] = { ...task, isComplete: !task.isComplete };
+      setTasks(newTasks);
+    }
   };
 
   const handleEditTask = () => {
@@ -92,18 +91,6 @@ const TodoList = () => {
     setCurrentTask({ ...currentTask, priority: event.target.value });
   };
 
-  const handleCompleteChange = () => {
-    setIsComplete(!isComplete);
-
-    const newTasks = [...tasks];
-    const index = newTasks.findIndex((task) => task.id === currentTask.id);
-    if (index !== -1) {
-      newTasks[index] = { ...currentTask };
-      newTasks[index].isDone = isComplete;
-      setTasks(newTasks);
-    }
-    setCurrentTask(defaultTask);
-  };
   const handleSubmit = () => {
     if (!currentTask.task || !currentTask.deadline || !currentTask.priority) {
       return;
@@ -178,8 +165,7 @@ const TodoList = () => {
               tasks={tasks}
               handleDeleteTask={handleDeleteTask}
               handleOpenEditDialog={handleOpenEditDialog}
-              handleCompleteChange={handleCompleteChange}
-              isComplete={isComplete}
+              handleTaskComplete={handleTaskComplete}
             />
           </TableBody>
         </Table>

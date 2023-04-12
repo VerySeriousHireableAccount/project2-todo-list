@@ -87,7 +87,8 @@ const SubmitButton = ({
           <TextField
             margin="dense"
             label="Deadline"
-            type="text"
+            type="date"
+            inputFormat="MM/dd/yyyy"
             fullWidth
             value={currentTask.deadline || ""}
             onChange={handleDeadlineChange}
