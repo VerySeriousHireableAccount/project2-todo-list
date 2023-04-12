@@ -1,78 +1,60 @@
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import Button from "@mui/material/Button";
+import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Button from "@mui/material/Button";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import Checkbox from "@mui/material/Checkbox";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import FormDialog from "./Todo-form";
 
-function createData(
-  title,
-  description,
-  deadline,
-  priority,
+const Todo = ({
+  tasks,
+  handleDeleteTask,
+  handleOpenEditDialog,
+  handleCompleteChange,
   isComplete,
-  action
-) {
-  return { title, description, deadline, priority };
-}
+}) => {
+  return tasks.map((task) => (
+    <TableRow key={task.id}>
+      <TableCell align="center">{task.task}</TableCell>
+      <TableCell align="center">{task.description}</TableCell>
+      <TableCell align="center">{task.deadline}</TableCell>
+      <TableCell align="center">{task.priority}</TableCell>
+      <TableCell align="center">
+        <Checkbox checked={task.isDone} onChange={handleCompleteChange} />
+      </TableCell>
+      <TableCell align="center">
+        <ButtonGroup
+          orientation="vertical"
+          aria-label="vertical contained button group"
+          variant="contained"
+          className="icons"
+        >
+          {task.isDone ? (
+            <></>
+          ) : (
+            <Button
+              variant="contained"
+              startIcon={<EditIcon />}
+              onClick={() => handleOpenEditDialog(task)}
+              className="edit-icon"
+            >
+              UPDATE
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            startIcon={<CancelIcon />}
+            color="error"
+            onClick={() => handleDeleteTask(task.id)}
+            className="delete-icon"
+          >
+            DELETE
+          </Button>
+        </ButtonGroup>
+      </TableCell>
+    </TableRow>
+  ));
+};
 
-const rows = [createData("title01", "description01", "02/03/2022", "low")];
-
-export default function AccessibleTable() {
-  return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">Title</TableCell>
-            <TableCell align="center">Description</TableCell>
-            <TableCell align="center">Deadline</TableCell>
-            <TableCell align="center">Priority</TableCell>
-            <TableCell align="center">IsComplete</TableCell>
-            <TableCell align="center">Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell align="center">{row.title}</TableCell>
-              <TableCell align="center">{row.description}</TableCell>
-              <TableCell align="center">{row.deadline}</TableCell>
-              <TableCell align="center">{row.priority}</TableCell>
-              <TableCell align="center">
-                <Checkbox />
-              </TableCell>
-              <TableCell align="center">
-                <ButtonGroup
-                  orientation="vertical"
-                  aria-label="vertical contained button group"
-                  variant="contained"
-                >
-                  <Button variant="contained" startIcon={<EditIcon />}>
-                    UPDATE
-                  </Button>
-                  <Button
-                    variant="contained"
-                    startIcon={<CancelIcon />}
-                    color="error"
-                  >
-                    DELETE
-                  </Button>
-                </ButtonGroup>
-              </TableCell>
-            </TableRow>
-          ))}
-          <FormDialog />
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}
+export default Todo;

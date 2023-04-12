@@ -1,16 +1,17 @@
-import * as React from "react";
+import React from "react";
+import "./App.css";
+import TodoList from "./Components/Todo-list";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import AccessibleTable from "./Components/Todo-table";
-import Header from "./Components/Header";
 
-export default function ButtonAppBar() {
+function App() {
   return (
     <Box>
       <AppBar position="static">
-        <Header />
-        <AccessibleTable />
+        <TodoList />
       </AppBar>
     </Box>
   );
 }
+
+export default App;
