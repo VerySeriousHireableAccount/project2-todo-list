@@ -42,7 +42,9 @@ const SubmitButton = ({
         open={openEditDialog ? openEditDialog : openAddDialog}
         onClose={openEditDialog ? handleCloseEditDialog : handleCloseAddDialog}
       >
-        <Toolbar sx={{ display: "flex", backgroundColor: "#1666bf" }}>
+        <Toolbar
+          sx={{ display: "flex", backgroundColor: "#1666bf", color: "#ffffff" }}
+        >
           {isUpdate ? <EditIcon /> : <AddCircleIcon />}
           <DialogTitle>{openEditDialog ? "Edit" : "Add"} Task</DialogTitle>
         </Toolbar>
@@ -86,9 +88,8 @@ const SubmitButton = ({
           />
           <TextField
             margin="dense"
-            label="Deadline"
+            label={openEditDialog || currentTask.deadline ? "Deadline" : ""}
             type="date"
-            inputFormat="MM/dd/yyyy"
             fullWidth
             value={currentTask.deadline || ""}
             onChange={handleDeadlineChange}
